@@ -5,7 +5,10 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {configureStore} from '@reduxjs/toolkit'
 import {Provider} from 'react-redux'
-import reducer from './Reducer'
+import fetchreducer from './Reducer'
+import thunk from 'redux-thunk'
+import {composeWithDevTools} from 'redux-devtools-extension'
+// import { batchedSubscribe } from 'redux-batched-subscribe'
 
 // const mylogger=(store)=>{
 //   return(next)=>{
@@ -16,20 +19,23 @@ import reducer from './Reducer'
 //   }
 // }
 
-const mylogger=store=>next=>action=>{
-  console.log("WE ARE IN MIDDLEWARE")
-  if(store.getState() >=10)
-  {
+// const mylogger=store=>next=>action=>{
+//   console.log("WE ARE IN MIDDLEWARE")
+//   if(store.getState() >=10)
+//   {
 
-    return next({
-      type:"DECREMENT"
-    })
-  }
-  return next(action)
-}
+//     return next({
+//       type:"DECREMENT"
+//     })
+//   }
+//   return next(action)
+// }
+
 const store=configureStore({
-  reducer:reducer,
-  middleware:[mylogger]
+  reducer:fetchreducer,
+  middleware:[thunk],
+  // enhancers: [batchedSubscribe()],
+ 
   
 })
 
