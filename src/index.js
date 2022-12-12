@@ -3,12 +3,44 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {configureStore} from '@reduxjs/toolkit'
+import {Provider} from 'react-redux'
+import reducer from './Reducer'
+
+// const mylogger=(store)=>{
+//   return(next)=>{
+//     return(action)=>{
+//       console.log("WE ARE IN MIDDLEWARE")
+//       return next(action)
+//     }
+//   }
+// }
+
+const mylogger=store=>next=>action=>{
+  console.log("WE ARE IN MIDDLEWARE")
+  if(store.getState() >=10)
+  {
+
+    return next({
+      type:"DECREMENT"
+    })
+  }
+  return next(action)
+}
+const store=configureStore({
+  reducer:reducer,
+  middleware:[mylogger]
+  
+})
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+ <Provider store={store}>
     <App />
-  </React.StrictMode>
+  
+    </Provider>
+
+  
 );
 
 // If you want to start measuring performance in your app, pass a function
